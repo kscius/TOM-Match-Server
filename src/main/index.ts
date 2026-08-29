@@ -3,7 +3,7 @@ import { basename, join } from 'node:path'
 import type { Server } from 'node:http'
 import { createApp } from '../server/app'
 import { TournamentStore } from '../server/store'
-import { listLanIpv4Addresses as getLanAddresses } from '../server/lan'
+import { getLanAddresses } from '../server/lan'
 import { currentRoundNumber } from '../shared/tournament/view'
 
 const PORT = 8787

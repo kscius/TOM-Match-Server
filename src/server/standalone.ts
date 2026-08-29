@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import { createApp } from './app.js'
-import { listLanIpv4Addresses } from './lan.js'
+import { getLanAddresses } from './lan.js'
 import { TournamentStore } from './store.js'
 
 const PORT = Number(process.env.PORT ?? 8787)
@@ -18,7 +18,7 @@ async function main(): Promise<void> {
   const app = createApp(store)
   const host = '0.0.0.0'
   app.listen(PORT, host, () => {
-    const lan = listLanIpv4Addresses()
+    const lan = getLanAddresses()
     console.log(`TOM LAN viewer listening on http://${host}:${PORT}`)
     for (const ip of lan) {
       console.log(`  LAN: http://${ip}:${PORT}`)

@@ -130,9 +130,37 @@ body {
   gap: 0.4rem;
 }
 
-.url-list code {
+.url-btn {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-family: monospace;
   font-size: 0.95rem;
   color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, border-color 0.12s ease;
+  width: 100%;
+}
+
+.url-btn:hover {
+  background: rgba(61, 156, 240, 0.08);
+  border-color: var(--accent);
+}
+
+.url-btn--active {
+  background: rgba(61, 156, 240, 0.14);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.qr-hint {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-style: italic;
 }
 
 .qr-wrap {

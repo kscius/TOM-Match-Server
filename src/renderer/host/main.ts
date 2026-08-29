@@ -26,6 +26,9 @@ declare global {
   }
 }
 
+/** Session-scoped selection: URL the user manually clicked for the QR. */
+let selectedLanUrl: string | null = null
+
 function $(id: string): HTMLElement {
   const el = document.getElementById(id)
   if (!el) throw new Error(`Missing #${id}`)
@@ -66,7 +69,7 @@ async function renderQr(url: string | null): Promise<void> {
   caption.textContent = url
 }
 
-function renderLanUrls(urls: string[]): void {
+function renderLanUrls(urls: string[], activeUrl: string | null): void {
   const list = $('lan-urls')
   list.replaceChildren()
 
@@ -79,9 +82,17 @@ function renderLanUrls(urls: string[]): void {
 
   for (const url of urls) {
     const li = document.createElement('li')
-    const code = document.createElement('code')
-    code.textContent = url
-    li.appendChild(code)
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'url-btn' + (url === activeUrl ? ' url-btn--active' : '')
+    btn.textContent = url
+    btn.addEventListener('click', () => {
+      selectedLanUrl = url
+      void renderQr(url).then(() => {
+        renderLanUrls(urls, url)
+      })
+    })
+    li.appendChild(btn)
     list.appendChild(li)
   }
 }
@@ -106,9 +117,18 @@ async function applyStatus(status: HostStatus, urls?: string[]): Promise<void> {
   toggle.dataset.running = status.serverRunning ? '1' : '0'
 
   const lanUrls = urls ?? (await window.hostApi.getLanUrls())
-  renderLanUrls(lanUrls)
 
-  const primary = status.serverRunning ? (lanUrls[0] ?? null) : null
+  // Keep selectedLanUrl only if it is still in the current list.
+  if (selectedLanUrl !== null && !lanUrls.includes(selectedLanUrl)) {
+    selectedLanUrl = null
+  }
+
+  // Default to first ranked URL when server is running; otherwise clear.
+  const primary = status.serverRunning
+    ? (selectedLanUrl ?? lanUrls[0] ?? null)
+    : null
+
+  renderLanUrls(lanUrls, primary)
   await renderQr(primary)
 }
 
