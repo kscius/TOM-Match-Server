@@ -12,7 +12,7 @@
 		<startdate>08/28/2026</startdate>
 		<lessswiss>false</lessswiss>
 		<autotablenumber>true</autotablenumber>
-		overflowtablestart>0</overflowtablestart>
+		<overflowtablestart>0</overflowtablestart>
 	</data>
 	<timeelapsed>0</timeelapsed>
 	<players>
