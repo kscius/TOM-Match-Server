@@ -1,20 +1,21 @@
 :root {
   color-scheme: dark;
-  --bg: #070b09;
-  --bg-elevated: #0e1612;
-  --bg-row: #121c17;
-  --bg-row-hover: #18261f;
-  --border: #24332b;
-  --border-strong: #3a5246;
-  --text: #e8efe9;
-  --text-muted: #8fa396;
-  --text-faint: #5f7368;
-  --accent: #c8a24a;
-  --accent-dim: #8a6f32;
-  --ok: #6dbf8a;
-  --warn: #d4a84b;
-  --danger: #e07a6a;
-  --focus: #c8a24a;
+  --bg: #12061c;
+  --bg-elevated: #1e0c2e;
+  --bg-row: #261238;
+  --bg-row-hover: #321848;
+  --bg-inset: #0e0a1a;
+  --border: #4a2a5e;
+  --border-strong: #6b3d82;
+  --text: #f5e8f4;
+  --text-muted: #b89bc4;
+  --text-faint: #9a84a8;
+  --accent: #ff2d9b;
+  --accent-dim: #c41870;
+  --ok: #00d4b8;
+  --warn: #ffc857;
+  --danger: #ff4d5e;
+  --focus: #00e5d4;
   --font-display: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
@@ -42,8 +43,8 @@ body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(120% 80% at 50% -20%, #143022 0%, transparent 55%),
-    linear-gradient(180deg, #0a120e 0%, var(--bg) 40%);
+    radial-gradient(120% 80% at 50% -20%, #3a1458 0%, transparent 55%),
+    linear-gradient(135deg, #1a0a28 0%, var(--bg) 45%, #061c1a 100%);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
@@ -129,7 +130,7 @@ body {
   padding: 0.75rem 0.85rem;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  background: #0a100d;
+  background: var(--bg-inset);
   color: var(--text);
   font: inherit;
   outline: none;
@@ -152,7 +153,7 @@ body {
   overflow: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: #0a100d;
+  background: var(--bg-inset);
 }
 
 .roster-item {
@@ -308,37 +309,38 @@ body {
 
 .status-pill[data-status="playing"] {
   color: var(--ok);
-  border-color: #2f5a40;
-  background: #102018;
+  border-color: #1a5a52;
+  background: #0e2422;
 }
 
 .status-pill[data-status="bye"] {
   color: var(--accent);
   border-color: var(--accent-dim);
-  background: #1a160c;
+  background: #2a1024;
 }
 
 .status-pill[data-status="done"] {
   color: var(--text-muted);
   border-color: var(--border);
-  background: #101412;
+  background: #1a1224;
 }
 
 .status-pill[data-status="dropped"] {
-  color: #e07a6a;
-  border-color: #6a3530;
-  background: #1a100f;
+  color: var(--danger);
+  border-color: #6a2830;
+  background: #241018;
 }
 
 .status-pill[data-status="unpaired"] {
   color: var(--warn);
   border-color: #6a5430;
-  background: #17140c;
+  background: #241c10;
 }
 
 .status-pill[data-status="no_tournament"] {
-  color: var(--text-faint);
+  color: var(--text-muted);
   border-color: var(--border);
+  background: #1a1224;
 }
 
 .status-message {
@@ -358,7 +360,7 @@ body {
   flex-direction: column;
   gap: 0.2rem;
   padding: 0.75rem;
-  background: #0a100d;
+  background: var(--bg-inset);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
@@ -384,7 +386,7 @@ body {
 .detail-value.table-number {
   font-family: var(--font-mono);
   font-size: 1.6rem;
-  color: var(--accent);
+  color: var(--focus);
 }
 
 .banner {
@@ -398,9 +400,9 @@ body {
 }
 
 .banner-error {
-  border-color: #6a3530;
-  color: #e8c4be;
-  background: #1a100f;
+  border-color: #6a2830;
+  color: #f5c4c8;
+  background: #241018;
 }
 
 .poll-status {

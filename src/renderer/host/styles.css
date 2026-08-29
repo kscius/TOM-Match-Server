@@ -1,13 +1,13 @@
 :root {
-  --bg: #0f1419;
-  --surface: #1a222c;
-  --border: #2c3a4a;
-  --text: #e8eef4;
-  --muted: #9aa8b6;
-  --accent: #3d9cf0;
-  --accent-hover: #5aadf5;
-  --warn: #f0c14d;
-  --danger: #f07178;
+  --bg: #12061c;
+  --surface: #1e0c2e;
+  --border: #4a2a5e;
+  --text: #f5e8f4;
+  --muted: #b89bc4;
+  --accent: #ff2d9b;
+  --accent-hover: #ff5ab0;
+  --warn: #ffc857;
+  --danger: #ff4d5e;
   --radius: 10px;
   --font: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
@@ -23,7 +23,7 @@ body {
   margin: 0;
   min-height: 100%;
   font-family: var(--font);
-  background: radial-gradient(ellipse at top, #1a2838 0%, var(--bg) 55%);
+  background: radial-gradient(ellipse at top, #3a1458 0%, var(--bg) 55%);
   color: var(--text);
 }
 
@@ -67,7 +67,7 @@ body {
 
 .btn--primary {
   background: var(--accent);
-  color: #061018;
+  color: #12061c;
 }
 
 .btn--primary:hover {
@@ -146,12 +146,12 @@ body {
 }
 
 .url-btn:hover {
-  background: rgba(61, 156, 240, 0.08);
+  background: rgba(255, 45, 155, 0.08);
   border-color: var(--accent);
 }
 
 .url-btn--active {
-  background: rgba(61, 156, 240, 0.14);
+  background: rgba(255, 45, 155, 0.14);
   border-color: var(--accent);
   font-weight: 600;
 }

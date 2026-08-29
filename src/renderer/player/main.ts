@@ -4,6 +4,12 @@
  * XSS-safe: textContent / createElement only — never innerHTML with names.
  */
 
+import {
+  captureRosterUi,
+  restoreRosterUi,
+  shouldRerenderAfterSnapshot
+} from './poll-render.js'
+
 const POLL_MS = 1500
 const STORAGE_PREFIX = 'tom-viewer'
 
@@ -231,6 +237,33 @@ function renderErrorBanner(message: string): HTMLElement {
 }
 
 function renderRoster(): void {
+  const dupes = duplicateNameSet(state.players)
+  const existingPanel = el.main.querySelector('section.panel')
+  const existingInput = document.getElementById(
+    'player-search'
+  ) as HTMLInputElement | null
+  const existingListHost = el.main.querySelector(
+    '.roster-list-host'
+  ) as HTMLElement | null
+
+  // Reuse search chrome so polls/data refreshes do not steal focus or mobile keyboard.
+  if (
+    existingPanel &&
+    existingInput &&
+    existingListHost &&
+    el.main.contains(existingPanel)
+  ) {
+    const scrollTop =
+      existingListHost.querySelector('ul.roster')?.scrollTop ?? 0
+    if (document.activeElement !== existingInput) {
+      existingInput.value = state.searchQuery
+    }
+    renderRosterList(existingListHost, dupes)
+    const list = existingListHost.querySelector('ul.roster')
+    if (list) list.scrollTop = scrollTop
+    return
+  }
+
   clearChildren(el.main)
 
   if (state.error && state.players.length === 0) {
@@ -253,6 +286,8 @@ function renderRoster(): void {
   setText(label, 'Buscar')
   panel.appendChild(label)
 
+  const listHost = createEl('div', 'roster-list-host')
+
   const input = createEl('input', 'search-input')
   input.type = 'search'
   input.id = 'player-search'
@@ -262,15 +297,12 @@ function renderRoster(): void {
   input.value = state.searchQuery
   input.addEventListener('input', () => {
     state.searchQuery = input.value
-    renderRosterList(listHost, dupes)
+    renderRosterList(listHost, duplicateNameSet(state.players))
   })
   panel.appendChild(input)
-
-  const listHost = createEl('div')
   panel.appendChild(listHost)
   el.main.appendChild(panel)
 
-  const dupes = duplicateNameSet(state.players)
   renderRosterList(listHost, dupes)
 
   if (state.loading && state.players.length === 0) {
@@ -478,9 +510,15 @@ function renderPlayerView(): void {
 }
 
 function render(): void {
+  const onRoster = state.screen === 'roster' || !state.selectedUserId
+  const preserve = onRoster
+    ? captureRosterUi(el.main, document.activeElement)
+    : null
   renderHeader()
-  if (state.screen === 'roster' || !state.selectedUserId) {
+  if (onRoster) {
     renderRoster()
+    // Fallback when chrome had to be rebuilt from scratch.
+    restoreRosterUi(el.main, preserve)
   } else {
     renderPlayerView()
   }
@@ -550,8 +588,10 @@ async function loadSnapshot(isPoll: boolean): Promise<void> {
 
     const prevKey = state.tournament?.tournamentKey ?? null
     const updatedAt = tournament.updatedAt ?? null
-    const changed = updatedAt !== state.lastUpdatedAt
+    const dataChanged = updatedAt !== state.lastUpdatedAt
     const keyChanged = prevKey !== null && prevKey !== tournament.tournamentKey
+    const prevScreen = state.screen
+    const prevError = state.error
 
     state.tournament = tournament
     state.players = Array.isArray(playersRes.players)
@@ -578,12 +618,18 @@ async function loadSnapshot(isPoll: boolean): Promise<void> {
       }
     }
 
-    if (!isPoll || changed || keyChanged || state.selectedUserId) {
+    const needPlayerRefresh =
+      state.selectedUserId != null && state.screen === 'player'
+
+    if (!isPoll || dataChanged || keyChanged || needPlayerRefresh) {
       state.lastUpdatedAt = updatedAt
-      if (state.selectedUserId && state.screen === 'player') {
+      if (needPlayerRefresh) {
         await refreshPlayerView()
       }
     }
+
+    const force =
+      state.screen !== prevScreen || state.error !== prevError
 
     setText(
       el.pollStatus,
@@ -591,17 +637,36 @@ async function loadSnapshot(isPoll: boolean): Promise<void> {
         ? `Actualizado ${formatUpdatedAt(updatedAt)}`
         : 'Esperando datos…'
     )
-    render()
+
+    if (
+      shouldRerenderAfterSnapshot({
+        isPoll,
+        dataChanged,
+        keyChanged,
+        screen: state.screen,
+        hasSelection: state.selectedUserId != null,
+        force
+      })
+    ) {
+      render()
+    }
   } catch {
     state.loading = false
     if (!state.tournament) {
       state.error =
         'No se pudo conectar con el servidor del torneo. Comprueba la red.'
-    } else if (!isPoll) {
-      state.error = 'Error al cargar el torneo. Reintentando…'
+      setText(el.pollStatus, 'Sin conexión — reintentando…')
+      render()
+      return
     }
+    if (!isPoll) {
+      state.error = 'Error al cargar el torneo. Reintentando…'
+      setText(el.pollStatus, 'Sin conexión — reintentando…')
+      render()
+      return
+    }
+    // Poll blip with roster already on screen: do not rebuild DOM (keeps focus/scroll).
     setText(el.pollStatus, 'Sin conexión — reintentando…')
-    render()
   }
 }
 
