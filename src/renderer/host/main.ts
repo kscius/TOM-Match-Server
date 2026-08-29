@@ -142,6 +142,10 @@ async function refresh(): Promise<void> {
 
 async function onOpenFile(): Promise<void> {
   showError(null)
+  if (!window.hostApi) {
+    showError('La API del host no está disponible. Reinicia la app o reinstala.')
+    return
+  }
   try {
     const result = await window.hostApi.openTdf()
     if (result.canceled) return
@@ -154,6 +158,10 @@ async function onOpenFile(): Promise<void> {
 
 async function onToggleServer(): Promise<void> {
   showError(null)
+  if (!window.hostApi) {
+    showError('La API del host no está disponible. Reinicia la app o reinstala.')
+    return
+  }
   const toggle = $('btn-toggle') as HTMLButtonElement
   const running = toggle.dataset.running === '1'
 
@@ -175,6 +183,11 @@ async function onToggleServer(): Promise<void> {
 }
 
 function boot(): void {
+  if (!window.hostApi) {
+    showError('La API del host no está disponible. Reinicia la app o reinstala.')
+    return
+  }
+
   $('btn-open').addEventListener('click', () => {
     void onOpenFile()
   })

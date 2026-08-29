@@ -38,7 +38,7 @@ npm test
 npm run dist:win
 ```
 
-Salida en `release/`:
+Salida en `release-build/`:
 
 - Instalador NSIS: `TOM Match Server-0.1.0-win-x64.exe`
 - Portable: `TOM Match Server-0.1.0-portable.exe`
@@ -46,14 +46,23 @@ Salida en `release/`:
 Notas:
 
 - `npm run dist:win` ejecuta `build` (player SPA + Electron) y luego `electron-builder --win --x64`.
+- Distribuye solo artefactos de `release-build/` (ignora cualquier carpeta `release/` antigua).
+  Si `release-build/` está bloqueado por una instancia abierta, el build puede escribirse en `release-build-fixed/` — usa esos `.exe`.
 - No hace falta firmar el código para uso interno; Windows SmartScreen puede avisar la primera vez.
 - Compilar el `.exe` desde macOS no es fiable; usa Windows o un runner `windows-latest`.
+- Icono personalizado: opcional (`build/icon.ico`); sin él se usa el icono por defecto de Electron.
 
 Solo empaquetar sin instalador (carpeta):
 
 ```bat
 npm run pack
 ```
+
+## Solución de problemas
+
+**`Cannot read properties of undefined (reading 'openTdf')`**
+Causa: builds antiguos empaquetaban el preload como ESM (incompatible con `sandbox`); `hostApi` no se cargaba.
+Solución: usa un build con preload CJS — `npm run dist:win` y redistribuye los `.exe` de `release-build/` (o `release-build-fixed/` si esa carpeta quedó bloqueada).
 
 ## Seguridad
 

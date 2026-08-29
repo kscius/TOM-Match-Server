@@ -1,5 +1,6 @@
 ﻿release/
 release-build/
+release-build-fixed/
 out/
 dist/
 node_modules/

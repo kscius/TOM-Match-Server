@@ -3,6 +3,7 @@ out/
 dist/
 release/
 release-build/
+release-build-fixed/
 .DS_Store
 *.log
 .cursor/
