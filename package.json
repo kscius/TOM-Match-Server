@@ -1,0 +1,94 @@
+{
+  "name": "tom-match-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electron LAN viewer for Pokémon TOM .tdf tournaments",
+  "author": "kscius",
+  "license": "MIT",
+  "homepage": "https://github.com/kscius/TOM-Match-Server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kscius/TOM-Match-Server.git"
+  },
+  "main": "out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run build:player && electron-vite build",
+    "build:player": "vite build --config vite.player.config.ts",
+    "preview": "electron-vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "start:server": "tsx src/server/standalone.ts",
+    "dist:win": "npm run build && electron-builder --win --x64",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "pack": "npm run build && electron-builder --dir"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "express": "^4.21.2",
+    "fast-xml-parser": "^4.5.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.13.10",
+    "@types/qrcode": "^1.5.5",
+    "electron": "^34.3.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^3.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.9"
+  },
+  "build": {
+    "appId": "com.kscius.tom-match-server",
+    "productName": "TOM Match Server",
+    "copyright": "Copyright © kscius",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/player",
+        "to": "player"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TOM Match Server"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+    }
+  }
+}

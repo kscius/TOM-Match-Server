@@ -1,0 +1,14 @@
+node_modules/
+out/
+dist/
+release/
+.DS_Store
+*.log
+.cursor/
+.env
+.env.*
+
+# Local TOM dumps (may contain PII) — keep sanitized samples/ only
+/*.tdf
+TORNEO*.tdf
+!samples/*.tdf

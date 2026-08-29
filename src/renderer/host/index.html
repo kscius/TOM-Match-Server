@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TOM LAN Viewer — Anfitrión</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="host">
+      <header class="host__header">
+        <h1>TOM LAN Viewer</h1>
+        <p class="host__warning" role="status">Solo LAN — sin autenticación</p>
+      </header>
+
+      <section class="host__actions" aria-label="Controles">
+        <button type="button" id="btn-open" class="btn btn--primary">
+          Abrir archivo .tdf
+        </button>
+        <button type="button" id="btn-toggle" class="btn btn--secondary">
+          Detener servidor
+        </button>
+      </section>
+
+      <section class="host__meta" aria-live="polite">
+        <dl class="meta-grid">
+          <div>
+            <dt>Archivo</dt>
+            <dd id="file-name">—</dd>
+          </div>
+          <div>
+            <dt>Torneo</dt>
+            <dd id="tournament-name">—</dd>
+          </div>
+          <div>
+            <dt>Ronda actual</dt>
+            <dd id="current-round">—</dd>
+          </div>
+          <div>
+            <dt>Jugadores</dt>
+            <dd id="player-count">—</dd>
+          </div>
+          <div>
+            <dt>Servidor</dt>
+            <dd id="server-state">—</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="host__network" aria-label="Red local">
+        <h2>URLs LAN</h2>
+        <ul id="lan-urls" class="url-list"></ul>
+        <div class="qr-wrap">
+          <h2>Código QR</h2>
+          <canvas id="qr-canvas" width="200" height="200" aria-label="Código QR de la URL LAN"></canvas>
+          <p id="qr-caption" class="qr-caption">—</p>
+        </div>
+      </section>
+
+      <p id="error" class="host__error" hidden></p>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

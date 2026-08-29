@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tournament type="2" stage="1" version="1.84" gametype="TRADING_CARD_GAME" mode="CUSTOM">
+	<data>
+		<name>TORNEO MUNDIAL 28826</name>
+		<id></id>
+		<city>HERMOSILLO</city>
+		<state>SONORA</state>
+		<country>Mexico</country>
+		<roundtime>0</roundtime>
+		<finalsroundtime>0</finalsroundtime>
+		<organizer popid="3902319" name="Alan Takaki"/>
+		<startdate>08/28/2026</startdate>
+		<lessswiss>false</lessswiss>
+		<autotablenumber>true</autotablenumber>
+		<overflowtablestart>0</overflowtablestart>
+	</data>
+	<timeelapsed>0</timeelapsed>
+	<players>
+		<player userid="5161593">
+			<firstname>Kristian</firstname>
+			<lastname>Bernal</lastname>
+			<birthdate></birthdate>
+			<creationdate>06/19/2025 18:30:23</creationdate>
+			<lastmodifieddate>05/28/2026 17:55:59</lastmodifieddate>
+		</player>
+		<player userid="5541055">
+			<firstname>Mario</firstname>
+			<lastname>Urrutia</lastname>
+			<birthdate></birthdate>
+			<creationdate>06/17/2025 17:41:50</creationdate>
+			<lastmodifieddate>06/17/2025 17:41:50</lastmodifieddate>
+		</player>
+		<player userid="3679392">
+			<firstname>Luis</firstname>
+			<lastname>Tapia</lastname>
+			<birthdate></birthdate>
+			<creationdate>05/20/2025 18:10:13</creationdate>
+			<lastmodifieddate>05/20/2025 18:10:13</lastmodifieddate>
+		</player>
+	</players>
+	<pods>
+	</pods>
+	<finalsoptions>
+	</finalsoptions>
+</tournament>
